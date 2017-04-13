@@ -1,0 +1,30 @@
+#Internal package file, do not edit.
+#Thu Apr 13 12:49:01 CST 2017
+2.base=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
+5.file=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_\\AndroidManifest.xml
+5.set=ANDROID_RESOURCE
+3.base=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_
+6.file=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_\\resources.arsc
+2.set=DEX
+4.base=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_
+7.file=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\item.xml
+7.set=ANDROID_RESOURCE
+count=9
+0.file=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\menu\\main.xml
+5.base=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_
+8.file=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout-v17\\activity_main.xml
+4.set=ANDROID_RESOURCE
+6.base=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_
+1.file=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\activity_main.xml
+1.set=ANDROID_RESOURCE
+7.base=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_
+2.file=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex
+6.set=ANDROID_RESOURCE
+0.base=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_
+8.base=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_
+3.file=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xhdpi-v4\\ic_launcher.png
+3.set=ANDROID_RESOURCE
+1.base=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_
+4.file=D\:\\Android-Demo\\VolleyGson\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\layout_edit_input_dialog.xml
+8.set=ANDROID_RESOURCE
+0.set=ANDROID_RESOURCE

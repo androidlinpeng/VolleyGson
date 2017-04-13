@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="D:\Android\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="D:\Android-Demo\https\VolleyGson\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0_73b9883bfda7e9a6ae205d0e99c174e73ba72aaa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android-Demo\VolleyGson\app\libs\Volley.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2dd908289a096a92b5f266cefb6c1bda32762cef">
+        <dex dex="D:\Android-Demo\VolleyGson\app\build\intermediates\pre-dexed\debug\Volley_b3f1e82392ee595f9507ebec7dae221c3f51eacf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\liang\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.2.1\d8e711ae108185c59c17b36b3c3f11b20cf9b4d5\gson-2.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d8e711ae108185c59c17b36b3c3f11b20cf9b4d5">
+        <dex dex="D:\Android-Demo\https\VolleyGson\app\build\intermediates\pre-dexed\debug\gson-2.2.1_2e8b9ed771a9cee194f9706eed89fea06195b791.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android-Demo\https\VolleyGson\app\libs\Volley.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2dd908289a096a92b5f266cefb6c1bda32762cef">
+        <dex dex="D:\Android-Demo\https\VolleyGson\app\build\intermediates\pre-dexed\debug\Volley_d85cc2791a10651637301a5818de57d8ad2d95a0.jar" />
+    </item>
+
+</items>
