@@ -4,18 +4,21 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.MyApplication;
-import com.example.data.ResultData;
+import com.example.cache.DoubleCache;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -30,21 +33,21 @@ import static android.content.Context.MODE_PRIVATE;
 public class APIHttp {
 
     private static final String TAG = "APIHttp";
-
-    public final static String COOKIE ="Cookie";
-    public final static String SET_COOKIE ="Set-Cookie";
+    public final static String COOKIE = "Cookie";
+    public final static String SET_COOKIE = "Set-Cookie";
 
     //不带Cookie的Get请求
-    public static void get(String url,Handler handler,int what,RequestQueue requestQueue){
-        ResultData data=new ResultData();
-        StringRequest requestGet = new StringRequest(Request.Method.GET,url,new MyListener(new Object(), handler, what,data), new MyErrorListener());
+    public static void get(String url,String requestTag,Handler handler, int what, RequestQueue requestQueue) {
+        removeRequest(requestQueue,requestTag);
+        StringRequest requestGet = new StringRequest(Request.Method.GET, url, new MyListener(new Object(), handler, what), new MyErrorListener(new Object(), handler, what));
+        requestGet.setTag(requestTag);
         requestQueue.add(requestGet);
     }
 
     //带Cookie的Get请求
-    public static ResultData getWithCookit(String url, Handler handler, int what, RequestQueue requestQueue){
-        ResultData data=new ResultData();
-        StringRequest requestPost = new StringRequest(Request.Method.GET,url,new MyListener(new Object(), handler, what,data), new MyErrorListener()){
+    public static void getWithCookit(String url,String requestTag, Handler handler, int what, RequestQueue requestQueue) {
+        removeRequest(requestQueue,requestTag);
+        StringRequest requestPost = new StringRequest(Request.Method.GET, url, new MyListener(new Object(), handler, what), new MyErrorListener(new Object(), handler, what)) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap hashMap = new HashMap();
@@ -52,14 +55,15 @@ public class APIHttp {
                 return hashMap;
             }
         };
+        requestPost.setRetryPolicy(new DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestPost.setTag(requestTag);
         requestQueue.add(requestPost);
-        return data;
     }
 
     //获取Cookie的带参数Post请求
-    public static ResultData postSetCookie(String url, Handler handler, int what, RequestQueue requestQueue, final Map values){
-        ResultData data=new ResultData();
-        StringRequest requestPost = new StringRequest(Request.Method.POST,url,new MyListener(new Object(), handler, what,data), new MyErrorListener()){
+    public static void postSetCookie(String url, String requestTag, Handler handler, int what, RequestQueue requestQueue, final Map values) {
+        removeRequest(requestQueue,requestTag);
+        StringRequest requestPost = new StringRequest(Request.Method.POST, url, new MyListener(new Object(), handler, what), new MyErrorListener(new Object(), handler, what)) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return values;
@@ -70,7 +74,7 @@ public class APIHttp {
                 try {
                     Map<String, String> responseHeaders = response.headers;
                     String rawCookies = responseHeaders.get("Set-Cookie");
-                    saveSettingNote(SET_COOKIE,rawCookies);
+                    saveSettingNote(SET_COOKIE, rawCookies);
                     String dataString = new String(response.data, "UTF-8");
                     return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
                 } catch (UnsupportedEncodingException e) {
@@ -78,18 +82,19 @@ public class APIHttp {
                 }
             }
         };
+        requestPost.setTag(requestTag);
         requestQueue.add(requestPost);
-        return data;
     }
 
     //带Cookie的带参数Post请求
-    public static ResultData postWithCookit(String url, Handler handler, int what, RequestQueue requestQueue, final Map values){
-        ResultData data=new ResultData();
-        StringRequest requestPost = new StringRequest(Request.Method.POST,url,new MyListener(new Object(), handler, what,data), new MyErrorListener()){
+    public static void postWithCookit(String url, String requestTag, Handler handler, int what, RequestQueue requestQueue, final Map values) {
+        removeRequest(requestQueue,requestTag);
+        StringRequest requestPost = new StringRequest(Request.Method.POST, url, new MyListener(new Object(), handler, what), new MyErrorListener(new Object(), handler, what)) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return values;
             }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap hashMap = new HashMap();
@@ -97,45 +102,46 @@ public class APIHttp {
                 return hashMap;
             }
         };
+        requestPost.setTag(requestTag);
         requestQueue.add(requestPost);
-        return data;
     }
 
     //不带Cookie的带参数Post请求
-    public static ResultData post(String url, Handler handler, int what, RequestQueue requestQueue, final Map values){
-        ResultData data=new ResultData();
-        StringRequest requestPost = new StringRequest(Request.Method.POST,url,new MyListener(new Object(), handler, what,data), new MyErrorListener()){
+    public static void post(String url, String requestTag, Handler handler, int what, RequestQueue requestQueue, final Map values) {
+        removeRequest(requestQueue,requestTag);
+        StringRequest requestPost = new StringRequest(Request.Method.POST, url, new MyListener(new Object(), handler, what), new MyErrorListener(new Object(), handler, what)) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return values;
             }
         };
+        requestPost.setTag(requestTag);
         requestQueue.add(requestPost);
-        return data;
     }
 
 
     //不带Cookie的Put请求
-    public static ResultData put(String url, Handler handler, int what, RequestQueue requestQueue, final Map values){
-        ResultData data=new ResultData();
-        MyListener myListener = new MyListener(new Object(), handler, what,data);
-        StringRequest requestPost = new StringRequest(Request.Method.PUT,url,myListener, new MyErrorListener()){
+    public static void put(String url, String requestTag, Handler handler, int what, RequestQueue requestQueue, final Map values) {
+        removeRequest(requestQueue,requestTag);
+        StringRequest requestPost = new StringRequest(Request.Method.PUT, url, new MyListener(new Object(), handler, what), new MyErrorListener(new Object(), handler, what)) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return values;
             }
         };
+        requestPost.setTag(requestTag);
         requestQueue.add(requestPost);
-        return data;
     }
+
     //带Cookie的Put请求
-    public static ResultData putWithCookit(String url, Handler handler, int what, RequestQueue requestQueue, final Map values){
-        ResultData data=new ResultData();
-        StringRequest requestPost = new StringRequest(Request.Method.PUT,url,new MyListener(new Object(), handler, what,data), new MyErrorListener()){
+    public static void putWithCookit(String url,String requestTag,  Handler handler, int what, RequestQueue requestQueue, final Map values) {
+        removeRequest(requestQueue,requestTag);
+        StringRequest requestPost = new StringRequest(Request.Method.PUT, url, new MyListener(new Object(), handler, what), new MyErrorListener(new Object(), handler, what)) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return values;
             }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap hashMap = new HashMap();
@@ -143,13 +149,14 @@ public class APIHttp {
                 return hashMap;
             }
         };
+        requestPost.setTag(requestTag);
         requestQueue.add(requestPost);
-        return data;
     }
+
     //带Cookie的Delete请求
-    public static ResultData deleteWithCookit(String url, Handler handler, int what, RequestQueue requestQueue){
-        ResultData data=new ResultData();
-        StringRequest requestPost = new StringRequest(Request.Method.DELETE,url,new MyListener(new Object(), handler, what,data), new MyErrorListener()){
+    public static void deleteWithCookit(String url, String requestTag, Handler handler, int what, RequestQueue requestQueue) {
+        removeRequest(requestQueue,requestTag);
+        StringRequest requestPost = new StringRequest(Request.Method.DELETE, url, new MyListener(new Object(), handler, what), new MyErrorListener(new Object(), handler, what)) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap hashMap = new HashMap();
@@ -157,41 +164,39 @@ public class APIHttp {
                 return hashMap;
             }
         };
+        requestPost.setTag(requestTag);
         requestQueue.add(requestPost);
-        return data;
     }
 
-    /**
-     * decodeConfig：图片存储模式
-     * Bitmap.Config ARGB_4444：每个像素占四位，即A=4，R=4，G=4，B=4，那么一个像素点占4+4+4+4=16位
-     * Bitmap.Config ARGB_8888：每个像素占四位，即A=8，R=8，G=8，B=8，那么一个像素点占8+8+8+8=32位
-     * Bitmap.Config RGB_565：每个像素占四位，即R=5，G=6，B=5，没有透明度，那么一个像素点占5+6+5=16位
-     * Bitmap.Config ALPHA_8：每个像素占四位，只有透明度，没有颜色。
-     */
-    public static ResultData Image(RequestQueue requestQueue,String url, Handler handler, int what, int imageViewWidth, int imageViewHeiget, Bitmap.Config decodeConfig){
-        ResultData data=new ResultData();
-        ImageRequest request = new ImageRequest(url,new MyImageListener(new Object(), handler, what),imageViewWidth, imageViewHeiget, decodeConfig, new MyErrorListener());
+    //图片下载
+    public static void Image(RequestQueue requestQueue, String url, Handler handler, int what, int imageViewWidth, int imageViewHeiget, Bitmap.Config decodeConfig) {
+        ImageRequest request = new ImageRequest(url, new MyImageListener(new Object(), handler, what), imageViewWidth, imageViewHeiget, decodeConfig, new MyErrorListener(new Object(), handler, what));
         requestQueue.add(request);
-        return data;
     }
 
-    public static ResultData ImageWithCache(RequestQueue requestQueue,String url, Handler handler, int what, int imageViewWidth, int imageViewHeiget, Bitmap.Config decodeConfig){
-        ResultData data=new ResultData();
-        ImageRequest request = new ImageRequest(url,new MyImageListener(new Object(), handler, what),imageViewWidth, imageViewHeiget, decodeConfig, new MyErrorListener());
-        requestQueue.add(request);
-        return data;
+    //图片下载（内存、文件，网络缓存）
+    public static void ImageWithCache(RequestQueue requestQueue, String url, Handler handler, ImageView imageView, int defaultImageResId, int errorImageResId) {
+        ImageLoader imageLoader  = new ImageLoader(requestQueue,new DoubleCache());
+        ImageLoader.ImageListener listener = imageLoader.getImageListener(imageView,defaultImageResId,errorImageResId);
+        imageLoader.get(url,listener);
     }
 
 
+    //移除请求
+    public static void removeRequest(RequestQueue requestQueue,String requestTag){
+        requestQueue.cancelAll(requestTag);
+    }
 
-    public static void saveSettingNote(String s,String saveData){//保存设置
-        SharedPreferences.Editor note = MyApplication.getInstance().getSharedPreferences(COOKIE,MODE_PRIVATE).edit();
+    //保存Cookie
+    public static void saveSettingNote(String s, String saveData) {
+        SharedPreferences.Editor note = MyApplication.getInstance().getSharedPreferences(COOKIE, MODE_PRIVATE).edit();
         note.putString(s, saveData);
         note.commit();
     }
-    public static String getSettingNote(String s){//获取保存设置
+    //获取Cookie
+    public static String getSettingNote(String s) {//获取保存设置
         SharedPreferences read = MyApplication.getInstance().getSharedPreferences(COOKIE, MODE_PRIVATE);
-        Log.i(TAG,"getCookie:"+read.getString(s, ""));
+        Log.i(TAG, "getCookie:" + read.getString(s, ""));
         return read.getString(s, "");
     }
 

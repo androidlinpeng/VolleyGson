@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.android.volley.Response;
-import com.example.data.ResultData;
 
 /**
  * Created by jackiechan on 15/11/9.
@@ -15,14 +14,12 @@ public class MyListener implements Response.Listener<String> {
     private Handler handler;
     private int what;
 
-    private ResultData data;
-
-    public MyListener(Object object, Handler handler, int what,ResultData data) {
+    public MyListener(Object object, Handler handler, int what) {
         this.object = object;
         this.handler = handler;
         this.what = what;
-        this.data = data;
     }
+
 
     @Override
     public void onResponse(String response) {
@@ -33,7 +30,6 @@ public class MyListener implements Response.Listener<String> {
         message.what = what;
         message.obj = object;
         handler.sendMessage(message);
-        data.setData(response);
     }
 
 }

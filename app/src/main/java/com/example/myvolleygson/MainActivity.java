@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
     private static final int path_info_put_what = 4;
     private static final int path_info_delete_cookie_what = 5;
     private static final int path_down_image_what = 6;
+    private static final int path_down_image_cache_what = 7;
 
     private RequestQueue requestQueue;
     private List<InfoEntity> indolist = new ArrayList<InfoEntity>();
@@ -57,11 +58,11 @@ public class MainActivity extends Activity {
 
     }
 
-    public void getCookieHttp() {
-        APIHttp.getWithCookit(APIUrl.path_info_get_cookie, handler,path_info_post_cookie_what, requestQueue);
+    public void getWithCookie() {
+        APIHttp.getWithCookit(APIUrl.path_info_get_cookie, "getWithCookie",handler,path_info_post_cookie_what, requestQueue);
     }
 
-    public void putCookieHttp(){
+    public void putWithCookie(){
 
         View view = getLayoutInflater().inflate(R.layout.layout_edit_input_dialog,null);
         final EditText editText = (EditText) view.findViewById(R.id.input);
@@ -74,7 +75,7 @@ public class MainActivity extends Activity {
                         String niname = editText.getText().toString();
                         HashMap<String, String> values = new HashMap<String, String>();
                         values.put("first_name", niname);
-                        APIHttp.putWithCookit(APIUrl.path_info_put, handler,path_info_put_what, requestQueue,values);
+                        APIHttp.putWithCookit(APIUrl.path_info_put,"putWithCookie", handler,path_info_put_what, requestQueue,values);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -86,12 +87,16 @@ public class MainActivity extends Activity {
                 .create();
         alertDialog.show();
     }
-    public void deleteCookieHttp(){
-        APIHttp.deleteWithCookit(APIUrl.path_info_delete_cookie, handler,path_info_delete_cookie_what, requestQueue);
+    public void deleteWithCookie(){
+        APIHttp.deleteWithCookit(APIUrl.path_info_delete_cookie, "deleteWithCookie",handler,path_info_delete_cookie_what, requestQueue);
     }
 
     public void imageHttp(){
-        APIHttp.Image(requestQueue,APIUrl.path_down_image, handler,path_down_image_what,50,50, Bitmap.Config.ARGB_8888);
+        APIHttp.Image(requestQueue,APIUrl.path_down_image,handler,path_down_image_what,50,50, Bitmap.Config.ARGB_8888);
+    }
+
+    public void imageCache(){
+        APIHttp.ImageWithCache(requestQueue,APIUrl.path_down_image,handler,imageView,R.drawable.ic_launcher,R.drawable.ic_launcher);
     }
 
     public void postSetCookieHttp(){
@@ -99,11 +104,11 @@ public class MainActivity extends Activity {
         values.put("username", "Android");
         values.put("password", "1234");
         values.put("imei", "00000000");
-        APIHttp.postSetCookie(APIUrl.path_login_post, handler,path_info_post_what, requestQueue,values);
+        APIHttp.postSetCookie(APIUrl.path_login_post,"postSetCookieHttp", handler,path_info_post_what, requestQueue,values);
     }
 
     public void getHttp(){
-        APIHttp.get(APIUrl.path_info_get, handler,path_info_get_what, requestQueue);
+        APIHttp.get(APIUrl.path_info_get, "getHttp",handler,path_info_get_what, requestQueue);
     }
 
     public void onClick(View view){
@@ -115,7 +120,7 @@ public class MainActivity extends Activity {
                 getHttp();
                 break;
             case R.id.getCookie:
-                getCookieHttp();
+                getWithCookie();
                 break;
             case R.id.post:
 //                APIHttp.post();
@@ -124,13 +129,16 @@ public class MainActivity extends Activity {
 //                APIHttp.postCookie();
                 break;
             case R.id.put:
-                putCookieHttp();
+                putWithCookie();
                 break;
             case R.id.deleteCookie:
-                deleteCookieHttp();
+                deleteWithCookie();
                 break;
             case R.id.image:
                 imageHttp();
+                break;
+            case R.id.imageCache:
+                imageCache();
                 break;
         }
 

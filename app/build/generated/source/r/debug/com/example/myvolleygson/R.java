@@ -18,19 +18,20 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000c;
+        public static final int action_settings=0x7f08000d;
         public static final int deleteCookie=0x7f080006;
         public static final int get=0x7f080001;
         public static final int getCookie=0x7f080002;
         public static final int image=0x7f080007;
-        public static final int imageView=0x7f080009;
-        public static final int input=0x7f08000b;
-        public static final int mTv=0x7f080008;
+        public static final int imageCache=0x7f080008;
+        public static final int imageView=0x7f08000a;
+        public static final int input=0x7f08000c;
+        public static final int mTv=0x7f080009;
         public static final int post=0x7f080003;
         public static final int postCookie=0x7f080004;
         public static final int postSetCookie=0x7f080000;
         public static final int put=0x7f080005;
-        public static final int tv=0x7f08000a;
+        public static final int tv=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -48,8 +49,15 @@ public final class R {
     public static final class style {
         /**  API 11 theme customizations can go here. 
  API 14 theme customizations can go here. 
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
          */
         public static final int AppBaseTheme=0x7f050000;
+        /**  All customizations that are NOT specific to a particular API-level can go here. 
+         */
         public static final int AppTheme=0x7f050001;
     }
 }
